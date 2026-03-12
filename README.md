@@ -1,2 +1,334 @@
-# vickcreative.com
- Graphic Design, videos Editing, Website Programming, and Creative Projects by Victor Audu in Nigeria.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Victor Audu - Full-Stack Developer, Video Editor & Graphic Designer based in Abuja."/>
+  <title>Vick Creative - Victor Audu</title>
+  
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --text: #e0e0e0;
+      --accent: #ff6b00;
+      --card: #1a1a1a;
+    }
+    body { margin:0; font-family:'Segoe UI',system-ui,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; }
+    main { flex:1; }
+    a { color:var(--accent); text-decoration:none; }
+
+    /* Navbar */
+    header {
+      position:fixed; top:0; left:0; right:0; height:80px;
+      background:rgba(15,15,15,0.95); backdrop-filter:blur(12px);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 5%; z-index:1000;
+    }
+    .logo { font-size:1.85rem; font-weight:bold; color:var(--accent); letter-spacing:1px; }
+
+    .nav-links { display:flex; gap:2rem; list-style:none; }
+    .nav-links a { color:var(--text); font-weight:500; transition:color .3s; display:flex; align-items:center; gap:8px; }
+    .nav-links a:hover { color:white; }
+
+    .hamburger { display:none; flex-direction:column; gap:6px; width:40px; cursor:pointer; }
+    .hamburger span { width:100%; height:3px; background:var(--accent); transition:all .4s; }
+    .hamburger.active span:nth-child(1) { transform:rotate(45deg) translate(8px,8px); }
+    .hamburger.active span:nth-child(2) { opacity:0; }
+    .hamburger.active span:nth-child(3) { transform:rotate(-45deg) translate(7px,-7px); }
+
+    /* MOBILE MENU */
+    .mobile-menu {
+      position:fixed; top:0; right:-100%; width:100%; max-width:380px; height:100vh;
+      background:rgba(15,15,15,0.98); backdrop-filter:blur(12px);
+      transition:right .45s cubic-bezier(0.68,-0.55,0.265,1.55); z-index:999;
+      display:flex; flex-direction:column;
+    }
+    .mobile-menu.active { right:0; }
+
+    .mobile-header {
+      padding:1.8rem 5%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:1px solid #333;
+    }
+    .mobile-header .logo { font-size:2rem; color:var(--accent); }
+
+    .mobile-close {
+      font-size:2.6rem;
+      color:var(--accent);
+      cursor:pointer;
+      line-height:1;
+      padding:5px 10px;
+    }
+    .mobile-close:hover { color:white; }
+
+    .mobile-menu ul {
+      list-style:none;
+      padding:2rem 0;
+      margin:0;
+      text-align:center;
+      flex:1;
+    }
+    .mobile-menu a {
+      font-size:1.85rem;
+      color:white;
+      margin:1.8rem 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      transition:all .3s;
+    }
+    .mobile-menu a:hover { color:var(--accent); transform:translateX(12px); }
+
+    /* Hero */
+    #hero { min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:0 5%; }
+    .hero-content h1 { font-size:4.2rem; margin:0; line-height:1.1; }
+    .hero-content p { font-sizeproject:1.45rem; max-width:680px; margin:1.8rem auto; }
+
+    /* Sections */
+    .section { padding:6rem 5%; }
+    .services { background:var(--card); }
+    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:2rem; margin-top:3rem; }
+    .card {
+      background:#222; padding:2.5rem 2rem; border-radius:16px; text-align:center;
+      transition:transform .4s, box-shadow .4s; cursor:pointer;
+    }
+    .card:hover { transform:translateY(-12px); box-shadow:0 20px 40px rgba(255,107,0,0.15); }
+
+    .card img {
+      display: block;
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Modal */
+    .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:2000; align-items:center; justify-content:center; padding:20px; }
+    .modal-content { background:#1a1a1a; max-width:900px; width:100%; border-radius:16px; overflow:hidden; max-height:92vh; display:flex; flex-direction:column; }
+    .modal-header { padding:1.5rem 2rem; background:#111; display:flex; justify-content:space-between; align-items:center; }
+    .modal-header h3 { margin:0; color:var(--accent); }
+    .close { font-size:2.2rem; cursor:pointer; color:#888; }
+    .close:hover { color:white; }
+    .modal-body { padding:1.5rem; overflow-y:auto; flex:1; display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; }
+    .modal-body img { width:100%; border-radius:12px; cursor:pointer; transition:transform .3s; }
+    .modal-body img:hover { transform:scale(1.04); }
+
+    @media (max-width:768px) {
+      .nav-links { display:none; }
+      .hamburger { display:flex; }
+      .hero-content h1 { font-size:3.2rem; }
+    }
+
+    @media (max-width: 480px) {
+      .card img { height: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">Vick Creative</div>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="https://www.facebook.com/profile.php?id=61586215537833" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+      <li><a href="https://www.instagram.com/victor.com008" target="_blank"><i class="fab fa-instagram"></i></a></li>
+      <li><a href="https://wa.me/+2349038163067" target="_blank"><i class="fab fa-whatsapp"></i></a></li>
+    </ul>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </header>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-header">
+      <div class="logo">Vick Creative</div>
+      <span class="mobile-close" id="mobileClose">✕</span>
+    </div>
+    <ul>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="https://wa.me/+2349038163067" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+      <li><a href="mailto:auduvictor2008@gmail.com"><i class="fas fa-envelope"></i> Email</a></li>
+    </ul>
+  </div>
+
+  <main>
+    <!-- Hero -->
+    <section id="hero" data-aos="fade-up">
+      <div class="hero-content">
+        <h1>Hi, I'm Victor 👋</h1>
+        <p>Full-Stack Developer • Video Editor • Graphic Designer</p>
+        <p>I craft digital experiences that combine modern technology with beautiful, user-focused design.</p>
+        <a href="https://wa.me/+2349038163067" target="_blank" style="display:inline-block;margin-top:2rem;padding:14px 32px;background:#25D366;color:#fff;font-weight:600;border-radius:50px;">Chat on WhatsApp</a>
+      </div>
+    </section>
+
+    <!-- Services (clickable) -->
+    <section class="section services" id="services">
+      <h2 data-aos="fade-up" style="text-align:center;">My Services</h2>
+      <div class="cards">
+        <div class="card" data-service="web" data-aos="zoom-in" data-aos-delay="100">
+          <h3>Web Development</h3>
+          <p>I Custom Website for Business and Private Organizations with Modern Tech for Top Performance.</p>
+        </div>
+        <div class="card" data-service="graphic" data-aos="zoom-in" data-aos-delay="200">
+          <h3>Graphic Design</h3>
+          <p>We Design High Quality and Eye-Catching Professional Designs at Affordable Price</p>
+        </div>
+        <div class="card" data-service="video" data-aos="zoom-in" data-aos-delay="300">
+          <h3>Video Editing</h3>
+          <p>We Edit Top Notch Videos for our Customer's Taste and up-to Standard Editing</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" id="about">
+      <h2 data-aos="fade-up" style="text-align:center;">About Me</h2>
+      <div style="max-width:800px;margin:3rem auto;text-align:center;" data-aos="fade-up">
+        <p>I'm Victor Audu, The CEO of VICK CREATIVE based in Abuja, Nigeria. With years of Experience in Graphic Design and Video Editing, I now bring full-stack Development skills to deliver complete digital solutions.</p>
+      </div>
+    </section>
+
+    <!-- Projects (non-clickable with real images) -->
+    <section class="section" id="projects">
+      <h2 data-aos="fade-up" style="text-align:center;">Featured Projects</h2>
+      <div class="cards">
+        <div class="card" data-aos="fade-up">
+          <img 
+            src="https://i.ibb.co/WWw8XNjx/1-20260202-210037-0000.png" 
+            alt="Modern full-stack web development project"
+          >
+          <h3>Vick Creative</h3>
+          <p>Graphic Design + Video Editing + Web Programming</p>
+        </div>
+
+        <div class="card" data-aos="fade-up" data-aos-delay="100">
+          <img 
+            src="https://i.ibb.co/m5wFMx0d/IMG-20260308-113713-400.png" 
+            alt="Professional corporate video editing"
+          >
+          <h3>CEO Vick Creative</h3>
+          <p> </p>Audu Victor <br /> 09038163067 <br /> </p>
+        </div>
+
+        <div class="card" data-aos="fade-up" data-aos-delay="200">
+          <img 
+            src="https://i.ibb.co/CswTTRLd/IMG-20260203-WA0057.jpg" 
+            alt="Brand identity logo and social media Flyer Design"
+          >
+          <h3 data-aos="fade-up "Brand Identity</h3>
+          <p>Logo + social Design</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section" id="contact" style="text-align:center;">
+      <h2 data-aos="fade-up">Let's Work Together</h2>
+      <p data-aos="fade-up" style="max-width:600px;margin:2rem auto;">Ready to bring your ideas to life?</p>
+    <a href="tel:2349038163067"
+   style="display: inline-flex; align-items: center; gap: 12px; margin: 1rem 0.5rem; padding: 14px 32px; background: var(--accent); color: white; font-weight: 600; border-radius: 50px; text-decoration: none; transition: all 0.3s;"
+   onmouseover="this.style.background='#ff8533'; this.style.transform='scale(1.05)';"
+   onmouseout="this.style.background='var(--accent)'; this.style.transform='scale(1)';">
+  <i class="fas fa-phone" style="font-size: 1.2rem;"></i>
+  Call Me Now
+</a>
+    </section>
+  </main>
+
+  <!-- SERVICE MODAL -->
+  <div class="modal" id="serviceModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Service Title</h3>
+        <span class="close" id="modalClose">✕</span>
+      </div>
+      <div class="modal-body" id="modalGallery"></div>
+      <div class="modal-footer" style="padding:1rem;text-align:center;color:#666;font-size:0.9rem;">Tap any image to view full size</div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2026 Vick Creative - Victor Audu. All rights reserved.</p>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+
+    // Hamburger + Mobile Menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileClose = document.getElementById('mobileClose');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+    });
+
+    mobileClose.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      mobileMenu.classList.remove('active');
+    });
+
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+      });
+    });
+
+    // Service Modal
+    const modal = document.getElementById('serviceModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalGallery = document.getElementById('modalGallery');
+    const modalClose = document.getElementById('modalClose');
+
+    const servicesData = {
+      web: { title: "WEB DEVELOPMENT", images: ["https://i.ibb.co/WWw8XNjx/1-20260202-210037-0000.png","https://i.ibb.co/M5xDJNDT/IMG-20260303-173201-058-1.jpg","https://i.ibb.co/Q7GP6m14/IMG-20260303-173146-427-1.jpg","https://i.ibb.co/4nDn4YYd/IMG-20260303-173131-445-1.jpg"] },
+      graphic: { title: "GRAPHIC DESIGN", images: ["https://i.ibb.co/WWw8XNjx/1-20260202-210037-0000.png","https://i.ibb.co/CswTTRLd/IMG-20260203-WA0057.jpg","https://i.ibb.co/27Zsnm49/IMG-20260305-WA0030.jpg","https://i.ibb.co/8gZGsFfB/IMG-20260202-WA0041.jpg","https://i.ibb.co/4wsb7WKp/IMG-20260131-WA0029.jpg"] },
+      video: { title: "VIDEO EDITING", images: ["https://i.ibb.co/WWw8XNjx/1-20260202-210037-0000.png","https://i.ibb.co/nNGDBbkd/IMG-20260303-173110-923-1.jpg","https://i.ibb.co/tGfR8MH/6a9b20c6271c7ffb4dbec2ae74c5a208.jpg","https://i.ibb.co/zhs61Mc4/2ece5789f809d1ee86a25c749a9f6c44-1.jpg","https://i.ibb.co/1tW3FC38/0ee589151a366cf811a570482cd3c0d1-1.jpg"] }
+    };
+
+    document.querySelectorAll('.card[data-service]').forEach(card => {
+      card.addEventListener('click', () => {
+        const service = card.getAttribute('data-service');
+        const data = servicesData[service];
+        if (!data) return;
+
+        modalTitle.textContent = data.title;
+        modalGallery.innerHTML = '';
+        data.images.forEach(src => {
+          const img = document.createElement('img');
+          img.src = src;
+          img.onclick = () => window.open(src, '_blank');
+          modalGallery.appendChild(img);
+        });
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    function closeModal() {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'visible';
+    }
+
+    modalClose.onclick = closeModal;
+    modal.onclick = (e) => { if (e.target === modal) closeModal(); };
+    document.addEventListener('keydown', e => { if (e.key === "Escape") closeModal(); });
+  </script>
+</body>
+</html>
